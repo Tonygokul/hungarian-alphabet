@@ -1,144 +1,30 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hungarian Alphabet – Smart Repeat Mode</title>
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#4CAF50">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            background-color: #f4f4f4;
-            padding: 40px;
-            user-select: none;
-        }
-
-        h1 {
-            color: #333;
-        }
-
-        .letter {
-            font-size: 150px;
-            margin: 50px 0;
-        }
-
-        .progress {
-            font-size: 22px;
-            margin-bottom: 20px;
-            color: #555;
-        }
-
-        button {
-            font-size: 22px;
-            padding: 18px 25px;
-            margin: 10px;
-            cursor: pointer;
-            border-radius: 10px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-        }
-
-        button:active {
-            background-color: #45a049;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hungarian Alphabet Test</title>
 </head>
-
 <body>
 
-    <h1>🇭🇺 Hungarian Alphabet</h1>
-    <div class="progress" id="progress"></div>
-    <div class="letter" id="letter"></div>
+<h1>Hungarian Alphabet – AUDIO TEST</h1>
 
-    <button onclick="playAudio()">🔊 Pronounce Letter</button>
-    <button onclick="correct()">✅ I Repeated Correctly</button>
-    <button onclick="incorrect()">❌ I Struggled</button>
+<div id="letter" style="font-size:120px;">A</div>
 
-    <audio id="audioPlayer"></audio>
+<button onclick="play()">🔊 PLAY SOUND</button>
 
-    <script>
-        // Letters array with audio
-        const letters = [
-            { letter: "A", audio: "a.mp3" }, { letter: "Á", audio: "aa.mp3" }, { letter: "B", audio: "b.mp3" },
-            { letter: "C", audio: "c.mp3" }, { letter: "CS", audio: "cs.mp3" }, { letter: "D", audio: "d.mp3" },
-            { letter: "DZ", audio: "dz.mp3" }, { letter: "DZS", audio: "dzs.mp3" }, { letter: "E", audio: "e.mp3" },
-            { letter: "É", audio: "ee.mp3" }, { letter: "F", audio: "f.mp3" }, { letter: "G", audio: "g.mp3" },
-            { letter: "GY", audio: "gy.mp3" }, { letter: "H", audio: "h.mp3" }, { letter: "I", audio: "i.mp3" },
-            { letter: "Í", audio: "ii.mp3" }, { letter: "J", audio: "j.mp3" }, { letter: "K", audio: "k.mp3" },
-            { letter: "L", audio: "l.mp3" }, { letter: "LY", audio: "ly.mp3" }, { letter: "M", audio: "m.mp3" },
-            { letter: "N", audio: "n.mp3" }, { letter: "NY", audio: "ny.mp3" }, { letter: "O", audio: "o.mp3" },
-            { letter: "Ó", audio: "oo.mp3" }, { letter: "Ö", audio: "oe.mp3" }, { letter: "Ő", audio: "ooe.mp3" },
-            { letter: "P", audio: "p.mp3" }, { letter: "Q", audio: "q.mp3" }, { letter: "R", audio: "r.mp3" },
-            { letter: "S", audio: "s.mp3" }, { letter: "SZ", audio: "sz.mp3" }, { letter: "T", audio: "t.mp3" },
-            { letter: "TY", audio: "ty.mp3" }, { letter: "U", audio: "u.mp3" }, { letter: "Ú", audio: "uu.mp3" },
-            { letter: "Ü", audio: "ue.mp3" }, { letter: "Ű", audio: "uue.mp3" }, { letter: "V", audio: "v.mp3" },
-            { letter: "W", audio: "w.mp3" }, { letter: "X", audio: "x.mp3" }, { letter: "Y", audio: "y.mp3" },
-            { letter: "Z", audio: "z.mp3" }, { letter: "ZS", audio: "zs.mp3" }
-        ];
+<audio id="audio"></audio>
 
-        // Shuffle letters
-        let practiceQueue = letters.slice().sort(() => Math.random() - 0.5);
-        let index = 0;
-        let correctCount = 0;
-
-        function showLetter() {
-            if (practiceQueue.length > 0 && index < practiceQueue.length) {
-                document.getElementById("letter").innerText = practiceQueue[index].letter;
-                document.getElementById("progress").innerText = `Letter ${index + 1} of ${practiceQueue.length} | Correct: ${correctCount}`;
-                playAudio();
-            } else {
-                alert(`🎉 Session finished!\nCorrect letters: ${correctCount} / ${letters.length}`);
-            }
-        }
-
-        function playAudio() {
-            const audio = document.getElementById("audioPlayer");
-            audio.src = "audio/" + practiceQueue[index].audio;
-            audio.play();
-        }
-
-        // User repeated correctly → next
-        function correct() {
-            correctCount++;
-            nextLetter();
-        }
-
-        // User struggled → keep in queue
-        function incorrect() {
-            practiceQueue.push(practiceQueue[index]);
-            nextLetter();
-        }
-
-        // Next letter
-        function nextLetter() {
-            index++;
-            showLetter();
-        }
-
-        // Swipe support
-        let touchstartX = 0, touchendX = 0;
-        function handleGesture() {
-            if (touchendX < touchstartX - 50) nextLetter();
-            if (touchendX > touchstartX + 50 && index > 0) { index--; showLetter(); }
-        }
-        document.addEventListener('touchstart', e => { touchstartX = e.changedTouches[0].screenX; });
-        document.addEventListener('touchend', e => { touchendX = e.changedTouches[0].screenX; handleGesture(); });
-
-        // Initialize
-        showLetter();
-
-        // Register service worker for offline
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('sw.js').then(() => {
-                console.log("Service Worker registered");
-            });
-        }
-    </script>
+<script>
+function play() {
+  const audio = document.getElementById("audio");
+  audio.src = "audio/a.mp3";
+  audio.load();
+  audio.play()
+    .then(() => console.log("playing"))
+    .catch(err => alert("AUDIO BLOCKED OR FILE NOT FOUND"));
+}
+</script>
 
 </body>
-
 </html>
